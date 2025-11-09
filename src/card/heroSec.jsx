@@ -1,135 +1,55 @@
-   <!--hero section-->
-    <div class="carousel">
-        <!-- list item -->
-        <div class="list">
-            <div class="item">
-                <img src="img/album-designers.jpg">
-                <div class="content">
-                    <div class="author">Photography By</div>
-                    <div class="title">Apshra Studio</div>
-                    <div class="topic">ALBUM DESIGNS</div>
-                    <div class="des">
-                        <!-- lorem 50 -->We offer you the variety of album designs & also cancavera Albums. <br>
-                        professional Wedding Album designers will make unique Wedding Albums.
-                    </div>    
-                </div>
-            </div>
-            <div class="item">
-                <img src="img/pre2.jpg">
-                <div class="content">
-                    <div class="author">Photography By</div>
-                    <div class="title">Apshra Studio</div>
-                    <div class="topic">PRE-WEDDING SHOOT</div>
-                    <div class="des">
-                        The main aim of pre-wedding shoot is to get used to being in front of the camera,
-                        <br> build rapport with your Photographer,& receive a lovely set of romentic photos.
-                    </div>      
-                </div>
-            </div>
+import React, { useEffect, useState } from "react";
+import "./heroSce.css";
 
-            <div class="item">
-                <img src="img/">
-                <div class="content">
-                    <div class="author">Photography By</div>
-                    <div class="title">Apshra Studio</div>
-                    <div class="topic">BABY PHOTOSHOOT</div>
-                    <div class="des">
-                        Contact us today for best Baby photography. <br> 
-                        Our professional Portfolio <br>
-                        Photographers will capture best Model Photoshoot
-                    </div>
-                </div>
-            </div>
+const slides = [
+  {
+    id: 1,
+    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200",
+    author: "Nature",
+    title: "Beautiful Landscape",
+    topic: "Mountains",
+  },
+  {
+    id: 2,
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200",
+    author: "Ocean",
+    title: "Peaceful Waves",
+    topic: "Beach",
+  },
+  {
+    id: 3,
+    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200",
+    author: "City",
+    title: "Modern Architecture",
+    topic: "Urban",
+  },
+];
 
-            <div class="item">
-                <img src="img/">
-                <div class="content">
-                    <div class="author">Photography By RAKESH</div>
-                    <div class="title">Apshra Studio</div>
-                    <div class="topic">E-COMM. PRODUCT PHOTOSHOOT</div>
-                    <div class="des">
-                        We provide best E-Commerce Photography and professional Products photography in Jharkhand. <br> Contact Us Today!
-                    </div>  
-                </div>
-            </div>
-            <div class="item">
-                <img src="img/">
-                <div class="content">
-                    <div class="author">Photography By</div>
-                    <div class="title">APSHRA STUDIO</div>
-                    <div class="topic">RAKESH</div>
-                    <div class="des">
-                        The mission of Apshra Photographers is just not to snap but to create a beautiful story filled
-                        with joy and emotions that creates lasting memories with passion and excitement, and every 
-                        guest in a family like manner.
-                    </div>  
-                </div>
-            </div>
-        </div>
-        <!-- list thumnail -->
-        <div class="thumbnail">
-            <div class="item">
-                <img src="img/album-designers.jpg">
-                <div class="content">
-                    <div class="title">
-                        ALBUM DESIGNS
-                    </div>
-                    <div class="description">
-                        Description
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="img/pre2.jpg">
-                <div class="content">
-                    <div class="title">
-                        PRE-WEDDING SHOOT
-                    </div>
-                    <div class="description">
-                        Description
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="img/Baby-photoshoot-locations-in-Bangalore.jpg">
-                <div class="content">
-                    <div class="title">
-                        BABY PHOTOSHOOT
-                    </div>
-                    <div class="description">
-                        Description
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="img/">
-                <div class="content">
-                    <div class="title">
-                        E-Comm. PRODUCT PHOTOSHOOT
-                    </div>
-                    <div class="description">
-                        Description
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="img/cameraH.jpg">
-                <div class="content">
-                    <div class="title">
-                        OWNER DESCRIPTION
-                    </div>
-                    <div class="description">
-                        Description
-                    </div>
-                </div>
-            </div>
-        </div>
-       </div> <!-- next prev -->
+export default function Hero() {
+  const [current, setCurrent] = useState(0);
 
-        <div class="arrows">
-            <button id="prev"><</button>
-            <button id="next">></button>
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, 4000); // change every 4 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="carousel">
+      {slides.map((slide, index) => (
+        <div
+          key={slide.id}
+          className={`slide ${index === current ? "active" : ""}`}
+        >
+          <img src={slide.image} alt={slide.title} />
+          <div className="content">
+            <div className="author">{slide.author}</div>
+            <div className="title">{slide.title}</div>
+            <div className="topic">{slide.topic}</div>
+          </div>
         </div>
-        
-        <div class="time"></div>
+      ))}
     </div>
+  );
+}

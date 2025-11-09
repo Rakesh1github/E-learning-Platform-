@@ -1,7 +1,11 @@
 
+
 import Navs from './Nav.jsx'
 import Nav2 from './Nav2.jsx'
 import {BrowserRouter as Router,Routes,Route } from 'react-router-dom'
+import Hero from './card/heroSec.jsx'
+
+
 
 
 
@@ -13,11 +17,14 @@ function App() {
     <>
     
       <Navs/>
-      <Router>
-      <Nav2/>
       
-    <h1>Rakesh</h1>
-    <h2>saurabh kumar shriwastava</h2>
+      <Hero/>
+      
+      <Router>
+      
+      
+      
+    
       <Routes>
         
         <Route path='/css' element={<Nav2/>}/>
