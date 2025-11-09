@@ -1,7 +1,7 @@
 .carousel {
   position: relative;
   width: 100%;
-  height: 85vh;
+  height: 70vh;
   overflow: hidden;
   background: linear-gradient(to right, #00093c, #2d0b00);
 }
@@ -22,7 +22,10 @@
 .slide img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /*  image perfectly fits container */
+  object-position: center; /* image center me rahe */
+  border-radius: 0; /* rounded remove for full banner look */
+  filter: brightness(80%);
 }
 
 .content {
