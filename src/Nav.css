@@ -1,4 +1,10 @@
-/* === Premium Navbar Design === */
+/* === Professional Responsive Navbar === */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 .site-header {
   width: 100%;
@@ -10,14 +16,15 @@
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
 }
 
-/* Inner layout */
+/* Container */
 .nav-inner {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 18px 30px; /* 🔼 increased height */
+  padding: 18px 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
 }
 
 /* === Logo === */
@@ -39,9 +46,10 @@
   transform: rotate(10deg) scale(1.1);
 }
 .brand {
-  font-size: 22px; /* 🔼 bigger font */
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.5px;
+  color: #fff;
 }
 
 /* === Navigation Links === */
@@ -49,14 +57,14 @@
   display: flex;
   align-items: center;
   list-style: none;
-  gap: 50px; /* 🔼 more gap between links */
+  gap: 50px;
   margin: 0;
   padding: 0;
 }
 .nav-links a {
   color: #fff;
   text-decoration: none;
-  font-size: 18px; /* 🔼 bigger font */
+  font-size: 18px;
   font-weight: 600;
   position: relative;
   transition: all 0.3s ease;
@@ -67,7 +75,7 @@
   position: absolute;
   width: 0;
   height: 2px;
-  background: #ffcc33; /* gold underline */
+  background: #ffcc33;
   left: 0;
   bottom: 0;
   transition: width 0.3s ease;
@@ -92,7 +100,6 @@
   background: rgba(255, 255, 255, 0.08);
   padding: 6px 10px;
   border-radius: 10px;
-  
   gap: 8px;
 }
 .search-input {
@@ -101,7 +108,7 @@
   color: #fff;
   font-size: 15px;
   outline: none;
-  min-width: 180px;
+  min-width: 260px;
 }
 .search-input::placeholder {
   color: rgba(255, 255, 255, 0.7);
@@ -190,15 +197,53 @@
     min-width: 130px;
   }
 }
-@media (max-width: 600px) {
+
+/* === Mobile View Fix (CollegeProject always visible) === */
+@media (max-width: 520px) {
+  .nav-inner {
+    padding: 10px 14px;
+    justify-content: space-between;
+  }
+
+  /* Logo section */
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-img {
+    width: 42px;
+    height: 42px;
+  }
+
+  /* Keep CollegeProject visible but smaller */
   .brand {
+    display: inline;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    color: #fff; /* Or change to #ffcc33 for gold text */
+  }
+
+  /* Search - only icon visible */
+  .search-input {
     display: none;
   }
-  .logo-img {
-    width: 50px;
-    height: 50px;
+  .search {
+    padding: 6px;
   }
+
+  /* Login button - smaller */
   .login-btn {
-    padding: 8px 14px;
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  /* Mobile menu positioning */
+  .mobile-menu {
+    top: 70px;
+    padding: 30px 16px;
   }
 }
