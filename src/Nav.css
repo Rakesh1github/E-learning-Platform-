@@ -1,76 +1,204 @@
+/* === Premium Navbar Design === */
 
-*{
-  margin: 0px;
-  padding: 0px;
-}
-.outerhome{
-  height: 60px;
-  width: 100vw;
-  background-color: #540b0e;
-  color: wheat;
-  display: flex;
-  
+.site-header {
+  width: 100%;
+  background: linear-gradient(90deg, #540b0e, #6a0f12);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
 }
 
-.unorderlist{
-  margin: 0px;
-  height: 60px;
-  width: 96vw;
-  display: flex;
-  
-  list-style: none;
-  gap: 50px;
-
-  align-items: center;
-  justify-content: center;
-  
-  
-}
-.Navhome{
+/* Inner layout */
+.nav-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 18px 30px; /* 🔼 increased height */
   display: flex;
   align-items: center;
-  height: 60px;
-  width: 100vw;
+  justify-content: space-between;
 }
-#search{
-  height: 35px;
-  width: 250px;
-  border-radius: 10px;
+
+/* === Logo === */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
 }
-#searchbutt{
-  height: 35px;
-  width: 40px;
-}
-#logo{
-  
-  height: 60px;
+.logo-img {
   width: 60px;
-  background-color: black;
-}
-#searchdiv{
-  margin: 0px;
   height: 60px;
-  width: 320px;
-  display: flex;
-  
-  list-style: none;
-  
-  
-  align-items: center;
-  
+  border-radius: 50%;
+  background-color: #731212;
+  box-shadow: 0 0 12px rgba(255, 200, 0, 0.45);
+  transition: transform 0.3s ease;
 }
-#Logindiv{
-  height: 60px;
-  width: 200px;
-  
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+.logo-img:hover {
+  transform: rotate(10deg) scale(1.1);
 }
-#logbutt{
-  height: 45px;
-  width: 110px;
-  border-radius: 10px;
-  background-color: rgb(244, 255, 35)
+.brand {
+  font-size: 22px; /* 🔼 bigger font */
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
 
+/* === Navigation Links === */
+.nav-links ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 50px; /* 🔼 more gap between links */
+  margin: 0;
+  padding: 0;
+}
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px; /* 🔼 bigger font */
+  font-weight: 600;
+  position: relative;
+  transition: all 0.3s ease;
+  padding-bottom: 4px;
+}
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: #ffcc33; /* gold underline */
+  left: 0;
+  bottom: 0;
+  transition: width 0.3s ease;
+}
+.nav-links a:hover::after {
+  width: 100%;
+}
+.nav-links a:hover {
+  color: #ffcc33;
+  transform: translateY(-2px);
+}
+
+/* === Search + Login Section === */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.search {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 10px;
+  border-radius: 10px;
+  
+  gap: 8px;
+}
+.search-input {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  min-width: 180px;
+}
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+.search-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+.search-btn:hover {
+  color: #ffcc33;
+}
+.login-btn {
+  background: linear-gradient(90deg, #fff, #f4f4f4);
+  color: #540b0e;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.15);
+}
+.login-btn:hover {
+  transform: translateY(-2px);
+  background: #ffcc33;
+  color: #000;
+}
+
+/* === Mobile Menu Toggle === */
+.mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* === Mobile Menu === */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 20, 20, 0.97);
+  z-index: 90;
+  padding: 40px 0;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.mobile-menu.show {
+  display: block;
+}
+.mobile-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.mobile-menu a {
+  font-size: 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.mobile-menu a:hover {
+  color: #ffcc33;
+}
+
+/* === Responsive Design === */
+@media (max-width: 1020px) {
+  .nav-links {
+    display: none;
+  }
+  .mobile-toggle {
+    display: inline;
+  }
+  .search-input {
+    min-width: 130px;
+  }
+}
+@media (max-width: 600px) {
+  .brand {
+    display: none;
+  }
+  .logo-img {
+    width: 50px;
+    height: 50px;
+  }
+  .login-btn {
+    padding: 8px 14px;
+  }
 }

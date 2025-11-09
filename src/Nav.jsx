@@ -1,48 +1,99 @@
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import './Nav.css'
-import { FaSearchDollar } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaSearch, FaBars, FaTimes } from "react-icons/fa";
+import "./Nav.css";
 
-function Navs() {
+export default function Navs() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <>
-    <div className='outerhome'>
-      
-      
-      <nav className='Navhome'>
-        <div id='logo'>
-
-      </div>
-      
-        <ul className='unorderlist'>
-          <li>HOME</li>
-          <li>LINK</li>
-          <li>Important Question</li>
-          <li>ABOUT</li>
-          <div id='searchdiv'>
-          <input type='search' id='search' placeholder=' search here'></input>
-          <button type='search' id='searchbutt'><FaSearchDollar /></button>
-          </div>
-          <h1></h1>
-          
-        </ul>
-        
-        <div id='Logindiv'>
-          <button type='button' id='logbutt'> Login</button>
+    <header className="site-header">
+      <div className="nav-inner">
+        {/* Logo + Brand */}
+        <div className="logo" aria-label="Site logo">
+          <img
+            src="/src/assets/logo.svg"
+            alt="College Project Logo"
+            className="logo-img"
+          />
+          <span className="brand">CollegeProject</span>
         </div>
-      </nav>
-      
-    </div>
-    
-    
-    
-    
-    </>
+
+        {/* Desktop Navigation */}
+        <nav
+          className={`nav-links ${open ? "open" : ""}`}
+          aria-label="Main navigation"
+        >
+          <ul>
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/link">Link</a>
+            </li>
+            <li>
+              <a href="/important">Important Questions</a>
+            </li>
+            <li>
+              <a href="/about">About</a>
+            </li>
+          </ul>
+        </nav>
+
+        {/* Right side actions */}
+        <div className="nav-actions">
+          <div className="search">
+            <input
+              type="search"
+              placeholder="Search here..."
+              aria-label="Search"
+              className="search-input"
+            />
+            <button className="search-btn" aria-label="Search button">
+              <FaSearch />
+            </button>
+          </div>
+
+          <button className="login-btn" aria-label="Login">
+            Login
+          </button>
+
+          {/* Mobile toggle */}
+          <button
+            className="mobile-toggle"
+            onClick={() => setOpen((s) => !s)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+          >
+            {open ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      <div className={`mobile-menu ${open ? "show" : ""}`} aria-hidden={!open}>
+        <ul>
+          <li>
+            <a href="/" onClick={() => setOpen(false)}>
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="/link" onClick={() => setOpen(false)}>
+              Link
+            </a>
+          </li>
+          <li>
+            <a href="/important" onClick={() => setOpen(false)}>
+              Important Questions
+            </a>
+          </li>
+          <li>
+            <a href="/about" onClick={() => setOpen(false)}>
+              About
+            </a>
+          </li>
+        </ul>
+      </div>
+    </header>
   );
 }
-
-export default Navs;
