@@ -7,6 +7,7 @@ import Hero from './card/heroSec.jsx'
 import Basic from './card/Browse.jsx'
 import "./index.css";
 import Footer from './HeaderFooter/footer.jsx'
+import Card2 from './card/Card2.jsx'
 
 
 
@@ -27,6 +28,7 @@ function App() {
       
       <Hero/>
       <Basic/>
+      <Card2/>
       
       
       <Router>

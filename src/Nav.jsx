@@ -24,18 +24,10 @@ export default function Navs() {
           aria-label="Main navigation"
         >
           <ul>
-            <li>
-              <a href="/">Home</a>
-            </li>
-            <li>
-              <a href="/link">Link</a>
-            </li>
-            <li>
-              <a href="/important">Important Questions</a>
-            </li>
-            <li>
-              <a href="/about">About</a>
-            </li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/link">Link</a></li>
+            <li><a href="/important">Important Questions</a></li>
+            <li><a href="/about">About</a></li>
           </ul>
         </nav>
 
@@ -72,26 +64,10 @@ export default function Navs() {
       {/* Mobile menu */}
       <div className={`mobile-menu ${open ? "show" : ""}`} aria-hidden={!open}>
         <ul>
-          <li>
-            <a href="/" onClick={() => setOpen(false)}>
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="/link" onClick={() => setOpen(false)}>
-              Link
-            </a>
-          </li>
-          <li>
-            <a href="/important" onClick={() => setOpen(false)}>
-              Important Questions
-            </a>
-          </li>
-          <li>
-            <a href="/about" onClick={() => setOpen(false)}>
-              About
-            </a>
-          </li>
+          <li><a href="/" onClick={() => setOpen(false)}>Home</a></li>
+          <li><a href="/link" onClick={() => setOpen(false)}>Link</a></li>
+          <li><a href="/important" onClick={() => setOpen(false)}>Important Questions</a></li>
+          <li><a href="/about" onClick={() => setOpen(false)}>About</a></li>
         </ul>
       </div>
     </header>
