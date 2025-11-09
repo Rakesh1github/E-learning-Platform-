@@ -27,7 +27,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-10 gap-8">
           <div className="md:w-1/3">
             <h2 className="text-2xl font-bold text-white mb-3">EduNexa</h2>
-            <p className="text-sm text-gray-400 mb-1">Subscribe to Updates</p>
+            <p className="text-sm text-gray-400 mb-1">Pin to Updates</p>
             <p className="text-xs text-gray-400 mb-1">
               Stay informed about Information & Technology.
             </p>
@@ -90,7 +90,6 @@ export default function Footer() {
                 { to: "/about", text: "About Us" },
                 { to: "/faq", text: "FAQs" },
                 { to: "/contact", text: "Contact Support" },
-                { to: "/privacy", text: "Privacy Policy" },
                 { to: "/terms", text: "Terms of Service" },
               ],
             },
@@ -112,7 +111,7 @@ export default function Footer() {
                 { to: "/", text: "Apptitude" },
                 { to: "/", text: "DSA" },
                 { to: "/", text: "Interview Ques." },
-                { to: "/", text: "...." },
+                { to: "/", text: "Prev. year Ques." },
                 
               ],
             },

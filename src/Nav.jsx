@@ -10,9 +10,9 @@ export default function Navs() {
       <div className="nav-inner">
         {/* Logo + Brand */}
         <div className="logo" aria-label="Site logo">
-          <img
-            src="/src/assets/logo.svg"
-            alt="College Project Logo"
+          <img id="logo"
+            src="/src/assets/logo.jpg"
+            alt="EduNexa Logo"
             className="logo-img"
           />
           <span className="brand">EduNexa</span>

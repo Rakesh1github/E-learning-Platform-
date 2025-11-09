@@ -36,6 +36,7 @@
   box-shadow: 0 0 12px rgba(255, 200, 0, 0.45);
   transition: transform 0.3s ease;
 }
+
 .logo-img:hover {
   transform: rotate(10deg) scale(1.1);
 }
