@@ -15,7 +15,7 @@ function App() {
       <Navs/>
       <Router>
       <Nav2/>
-      
+      <h1>hello world</h1>
 
       <Routes>
         
