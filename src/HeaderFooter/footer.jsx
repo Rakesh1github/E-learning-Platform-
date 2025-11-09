@@ -6,7 +6,7 @@ export default function Footer() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // 🟢 Define handleSubmit function properly
+  //  Define handleSubmit function properly
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -26,10 +26,10 @@ export default function Footer() {
         {/* Top Section */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-10 gap-8">
           <div className="md:w-1/3">
-            <h2 className="text-2xl font-bold text-white mb-3">Phaton</h2>
+            <h2 className="text-2xl font-bold text-white mb-3">EduNexa</h2>
             <p className="text-sm text-gray-400 mb-1">Subscribe to Updates</p>
-            <p className="text-xs text-gray-400">
-              Stay informed about our latest digital products and offers.
+            <p className="text-xs text-gray-400 mb-1">
+              Stay informed about Information & Technology.
             </p>
           </div>
 
@@ -70,8 +70,20 @@ export default function Footer() {
         <div className="border-t border-gray-700 mb-10"></div>
 
         {/* Links Section */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 ">
+           {/* About Section */}
+          <div>
+            <h3 className="font-semibold ml-10 text-white mb-3">About</h3>
+            <p className="text-sm text-gray-400">
+              A complete learning hub for MCA & BCA students — offering verified notes,
+              past papers, programming guides, and placement preparation resources.
+              Learn, share, and grow with our trusted academic community.
+            </p>
+          </div>
+
+          {/* Dynamic Sections */}
           {[
+            
             {
               title: "Quick Links",
               links: [
@@ -82,56 +94,29 @@ export default function Footer() {
                 { to: "/terms", text: "Terms of Service" },
               ],
             },
+           
             {
-              title: "Follow Us",
+              title: "Top Categories",
               links: [
-                { to: "/", text: "Facebook Page" },
-                { to: "/", text: "Tweet Feed" },
-                { to: "/", text: "Instagram Gallery" },
-                { to: "/", text: "Linkedin Profile" },
-                { to: "/", text: "Youtube Channel" },
+                { to: "/", text: "C++" },
+                { to: "/", text: "Java" },
+                { to: "/", text: "Python" },
+                { to: "/", text: "JavaScript" },
+                
               ],
             },
+          
             {
-              title: "Resources",
+              title: "Prepration Corner",
               links: [
-                { to: "/", text: "Blog Posts" },
-                { to: "/", text: "Case Studies" },
-                { to: "/", text: "Webinars" },
-                { to: "/", text: "Ebooks" },
-                { to: "/", text: "Guides" },
+                { to: "/", text: "Apptitude" },
+                { to: "/", text: "DSA" },
+                { to: "/", text: "Interview Ques." },
+                { to: "/", text: "...." },
+                
               ],
             },
-            {
-              title: "Support",
-              links: [
-                { to: "/", text: "Help Center" },
-                { to: "/", text: "Live Chat" },
-                { to: "/", text: "Feedback" },
-                { to: "/", text: "Community Forum" },
-                { to: "/", text: "Stay Connected" },
-              ],
-            },
-            {
-              title: "Contact Us",
-              links: [
-                { to: "/", text: "Email Newsletter" },
-                { to: "/", text: "Latest Updates" },
-                { to: "/", text: "Special Offers" },
-                { to: "/", text: "Product News" },
-                { to: "/", text: "Exclusive Content" },
-              ],
-            },
-            {
-              title: "Legal",
-              links: [
-                { to: "/", text: "Terms of Use" },
-                { to: "/", text: "Cookie Policy" },
-                { to: "/", text: "User Agreement" },
-                { to: "/", text: "Data Protection" },
-                { to: "/", text: "Credits" },
-              ],
-            },
+            
           ].map((section) => (
             <div key={section.title}>
               <h3 className="font-semibold text-white mb-3">{section.title}</h3>
@@ -149,8 +134,8 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-gray-700 mt-10 pt-6 text-right text-xs text-gray-500">
-          © {new Date().getFullYear()} Phaton. All rights reserved.
+        <div className="border-t border-gray-700 mt-10 pt-6 text-center text-xs text-gray-400">
+          © {new Date().getFullYear()} EduNexa. All rights reserved.
         </div>
       </div>
     </footer>

@@ -2,7 +2,8 @@
 
 .site-header {
   width: 100%;
-  background: linear-gradient(90deg, #540b0e, #6a0f12);
+  background: linear-gradient(to right, #00093c,#2d0b00);
+  font-family: monospace;
   color: #fff;
   position: sticky;
   top: 0;
@@ -42,6 +43,7 @@
   font-size: 22px; /* 🔼 bigger font */
   font-weight: 700;
   letter-spacing: 0.5px;
+   font-family: "MyCustomLogoFont", Arial, sans-serif;
 }
 
 /* === Navigation Links === */

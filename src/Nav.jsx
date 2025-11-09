@@ -15,7 +15,7 @@ export default function Navs() {
             alt="College Project Logo"
             className="logo-img"
           />
-          <span className="brand">CollegeProject</span>
+          <span className="brand">EduNexa</span>
         </div>
 
         {/* Desktop Navigation */}
