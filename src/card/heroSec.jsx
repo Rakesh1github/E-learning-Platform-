@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
 import "./heroSce.css";
+import heroImg1 from "../assets/heroImg1.jpg";
+import heroImg2 from "../assets/heroImg2.jpg";
+import heroImg3 from "../assets/heroImg3.jpg";
 
 const slides = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200",
+    image: heroImg1,
     author: "Nature",
     title: "Beautiful Landscape",
     topic: "Mountains",
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200",
+    image: heroImg2,
     author: "Ocean",
     title: "Peaceful Waves",
     topic: "Beach",
   },
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200",
+    image: heroImg3,
     author: "City",
     title: "Modern Architecture",
     topic: "Urban",
