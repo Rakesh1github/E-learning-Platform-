@@ -9,13 +9,13 @@
 /* Header */
 .site-header {
   width: 100%;
-   background: linear-gradient(to right, #00093c,#2d0b00);
+  background: linear-gradient(to right, #00093c, #2d0b00);
   color: #fff;
   position: sticky;
   top: 0;
   z-index: 99;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
-   font-family: monospace;
+  font-family: monospace;
 }
 
 /* Container */
@@ -37,6 +37,7 @@
   cursor: pointer;
   min-width: 0;
 }
+
 .logo-img {
   width: 60px;
   height: 60px;
@@ -50,12 +51,16 @@
 .logo-img:hover {
   transform: rotate(10deg) scale(1.1);
 
-  box-shadow: 0 0 12px rgba(255,200,0,0.45);
+  box-shadow: 0 0 12px rgba(255, 200, 0, 0.45);
   transition: transform .3s ease;
   flex-shrink: 0;
 
 }
-.logo-img:hover { transform: rotate(10deg) scale(1.06); }
+
+.logo-img:hover {
+  transform: rotate(10deg) scale(1.06);
+}
+
 .brand {
   font-size: 22px;
   font-weight: 700;
@@ -72,6 +77,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .nav-links ul {
   display: flex;
   align-items: center;
@@ -80,6 +86,7 @@
   margin: 0;
   padding: 0;
 }
+
 .nav-links a {
   color: #fff;
   text-decoration: none;
@@ -89,6 +96,7 @@
   transition: color .25s ease, transform .18s ease;
   padding-bottom: 4px;
 }
+
 .nav-links a::after {
   content: "";
   position: absolute;
@@ -99,8 +107,15 @@
   background: #ffcc33;
   transition: width .28s ease;
 }
-.nav-links a:hover::after { width: 100%; }
-.nav-links a:hover { color: #ffcc33; transform: translateY(-2px); }
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-links a:hover {
+  color: #ffcc33;
+  transform: translateY(-2px);
+}
 
 /* === Search + Login === */
 .nav-actions {
@@ -109,16 +124,22 @@
   gap: 16px;
   min-width: 0;
 }
+
 .search {
   display: flex;
   align-items: center;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   padding: 6px 10px;
   border-radius: 10px;
   gap: 8px;
   transition: background .2s ease, transform .15s ease;
 }
-.search:focus-within { background: rgba(255,255,255,0.10); transform: translateY(-1px); }
+
+.search:focus-within {
+  background: rgba(255, 255, 255, 0.10);
+  transform: translateY(-1px);
+}
+
 .search-input {
   background: transparent;
   border: none;
@@ -129,7 +150,11 @@
   padding: 6px 8px;
   transition: min-width .25s ease;
 }
-.search-input::placeholder { color: rgba(255,255,255,0.72); }
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.72);
+}
+
 .search-btn {
   background: none;
   border: none;
@@ -137,9 +162,13 @@
   font-size: 16px;
   cursor: pointer;
 }
-.search-btn:hover { color: #ffcc33; }
+
+.search-btn:hover {
+  color: #ffcc33;
+}
+
 .login-btn {
-  background: linear-gradient(90deg,#fff,#f4f4f4);
+  background: linear-gradient(90deg, #fff, #f4f4f4);
   color: #540b0e;
   border: none;
   padding: 10px 20px;
@@ -147,9 +176,14 @@
   font-weight: 600;
   cursor: pointer;
   transition: all .25s ease;
-  box-shadow: 0 4px 10px rgba(255,255,255,0.12);
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.12);
 }
-.login-btn:hover { transform: translateY(-2px); background: #ffcc33; color: #000; }
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  background: #ffcc33;
+  color: #000;
+}
 
 /* Mobile toggle */
 .mobile-toggle {
@@ -169,7 +203,7 @@
   right: 0;
   top: 82px;
   bottom: 0;
-  background: rgba(14,14,14,0.98);
+  background: rgba(14, 14, 14, 0.98);
   z-index: 90;
   padding: 40px 20px;
   overflow-y: auto;
@@ -177,11 +211,13 @@
   opacity: 0;
   transition: transform .28s ease, opacity .22s ease;
 }
+
 .mobile-menu.show {
   display: block;
   transform: translateY(0);
   opacity: 1;
 }
+
 .mobile-menu ul {
   display: flex;
   flex-direction: column;
@@ -191,33 +227,73 @@
   padding: 0;
   list-style: none;
 }
+
 .mobile-menu a {
   font-size: 20px;
   color: #fff;
   text-decoration: none;
 }
-.mobile-menu a:hover { color: #ffcc33; }
+
+.mobile-menu a:hover {
+  color: #ffcc33;
+}
 
 /* ========== Responsive Breakpoints ========== */
 @media (max-width: 1100px) {
-  .nav-inner { padding: 14px 22px; }
-  .logo-img { width: 54px; height: 54px; }
-  .brand { font-size: 20px; }
-  .nav-links ul { gap: 36px; }
-  .search-input { min-width: 200px; }
+  .nav-inner {
+    padding: 14px 22px;
+  }
+
+  .logo-img {
+    width: 54px;
+    height: 54px;
+  }
+
+  .brand {
+    font-size: 20px;
+  }
+
+  .nav-links ul {
+    gap: 36px;
+  }
+
+  .search-input {
+    min-width: 200px;
+  }
 }
 
 @media (max-width: 980px) {
-  .nav-links { display: none; }
-  .mobile-toggle { display: inline; }
-  .search-input { min-width: 140px; }
-  .login-btn { padding: 8px 14px; font-size: 15px; }
-  .logo-img { width: 52px; height: 52px; }
-  .brand { font-size: 18px; }
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: inline;
+  }
+
+  .search-input {
+    min-width: 140px;
+  }
+
+  .login-btn {
+    padding: 8px 14px;
+    font-size: 15px;
+  }
+
+  .logo-img {
+    width: 52px;
+    height: 52px;
+  }
+
+  .brand {
+    font-size: 18px;
+  }
 }
 
 @media (max-width: 520px) {
-  .nav-inner { padding: 12px 14px; }
+  .nav-inner {
+    padding: 12px 14px;
+  }
 
   /* keep brand visible on phones (smaller) */
   .brand {
@@ -229,25 +305,44 @@
     color: #fff;
   }
 
-  .logo-img { width: 44px; height: 44px; }
+  .logo-img {
+    width: 44px;
+    height: 44px;
+  }
 
   /* hide long search input on tiny screens */
-  .search-input { display: none; }
-  .search { padding: 6px; }
+  .search-input {
+    display: none;
+  }
 
-  .login-btn { padding: 6px 10px; font-size: 14px; }
+  .search {
+    padding: 6px;
+  }
 
-  .mobile-menu { top: 70px; padding: 30px 16px; }
+  .login-btn {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .mobile-menu {
+    top: 70px;
+    padding: 30px 16px;
+  }
 }
 
 /* tiny landscape devices */
 @media (max-height: 420px) and (max-width: 760px) {
-  .mobile-menu ul { gap: 12px; padding-top: 12px; }
+  .mobile-menu ul {
+    gap: 12px;
+    padding-top: 12px;
+  }
 }
 
 /* Accessibility focus */
-a:focus, button:focus, input:focus {
-  outline: 3px solid rgba(255,204,51,0.18);
+a:focus,
+button:focus,
+input:focus {
+  outline: 3px solid rgba(255, 204, 51, 0.18);
   outline-offset: 2px;
   border-radius: 6px;
 }

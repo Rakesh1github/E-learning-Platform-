@@ -27,10 +27,12 @@ export default function Navs() {
         >
           <ul>
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/link">Link</Link></li>
-            <li><Link to="/important">Important Questions</Link></li>
-            <li><Link to="/about">About</Link></li>
+            {/* <li><Link to="/link">Link</Link></li> */}
+            <li><Link to="/landing">Link</Link></li>
+            <li><Link to="/important">About</Link></li>
+            {/* <li><Link to="/about">About</Link></li> */}
           </ul>
+
         </nav>
 
         {/* Right side actions */}
@@ -68,9 +70,11 @@ export default function Navs() {
         <ul>
           <li><Link to="/" onClick={() => setOpen(false)}>Home</Link></li>
           <li><Link to="/link" onClick={() => setOpen(false)}>Link</Link></li>
+          <li><Link to="/landing" onClick={() => setOpen(false)}>Landing</Link></li>
           <li><Link to="/important" onClick={() => setOpen(false)}>Important Questions</Link></li>
           <li><Link to="/about" onClick={() => setOpen(false)}>About</Link></li>
         </ul>
+
       </div>
     </header>
   );

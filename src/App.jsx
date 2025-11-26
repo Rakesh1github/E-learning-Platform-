@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Navs from "./Nav.jsx";
 import Nav2 from "./Nav2.jsx";
 import Hero from "./card/heroSec.jsx";
@@ -6,15 +7,24 @@ import Basic from "./card/Browse.jsx";
 import Card2 from "./card/Card2.jsx";
 import Footer from "./HeaderFooter/footer.jsx";
 import AboutPage from "./About.jsx";
-import HeroSection from "./newHero.jsx";
-import "./index.css";
+import LandingPage from "./LandingPage.jsx";
+import NotesLibrary from "./NotesLibrary.jsx";
+import UploadNotes from "./UploadNotes.jsx";
 
 function App() {
   return (
     <Router>
+
+      {/* Header */}
       <Navs />
 
+      {/* All Routes */}
       <Routes>
+
+        {/* Landing Page */}
+        <Route path="/landing" element={<LandingPage />} />
+
+        {/* Home Page */}
         <Route
           path="/"
           element={
@@ -22,35 +32,28 @@ function App() {
               <Hero />
               <Basic />
               <Card2 />
-              <Footer />
             </>
           }
         />
 
+        {/* Link Page */}
         <Route path="/link" element={<Nav2 />} />
 
-        <Route
-          path="/about"
-          element={
-            <>
-              <AboutPage />
-              <HeroSection />
-              <Footer />
-            </>
-          }
-        />
+        {/* About Page */}
+        <Route path="/about" element={<AboutPage />} />
 
-        <Route
-          path="/important"
-          element={
-            <>
-              <AboutPage />
-              <HeroSection />
-              <Footer />
-            </>
-          }
-        />
+        {/* Important Questions (using AboutPage for now) */}
+        <Route path="/important" element={<AboutPage />} />
+
+        {/*  Notes Library Page */}
+        <Route path="/notes" element={<NotesLibrary />} />
+        <Route path="/upload" element={<UploadNotes />} />
+
       </Routes>
+
+      {/* Footer */}
+      <Footer />
+
     </Router>
   );
 }
