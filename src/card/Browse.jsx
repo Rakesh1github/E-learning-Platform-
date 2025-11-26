@@ -26,8 +26,7 @@ export default function Basic() {
                 <p className="card-sub">{c.subtitle}</p>
                 <p className="card-desc">{c.description}</p>
                 <div className="card-footer">
-                  <button className="btn">View</button>
-                  <div className="card-id">#{c.id}</div>
+                  <button className="btn-primary">View Course</button>
                 </div>
               </div>
             </div>

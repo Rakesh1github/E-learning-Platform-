@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { signInAnonymously } from "firebase/auth";
 import { auth, storage, db } from "./firebase"; // adjust path if needed
 import { useNavigate } from "react-router-dom";
 
 export default function UploadNotes() {
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState("");
@@ -41,13 +43,32 @@ export default function UploadNotes() {
     const maxBytes = 20 * 1024 * 1024; // 20MB
     if (!allowed.includes(f.type)) {
       setError("Only PDF/DOC/DOCX files are allowed.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
       return setFile(null);
     }
     if (f.size > maxBytes) {
       setError("File size must be less than 20 MB.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
       return setFile(null);
     }
     setFile(f);
+  };
+
+  const handleReset = () => {
+    setTitle("");
+    setSubject("");
+    setSemester("");
+    setType("Notes");
+    setTags("");
+    setDescription("");
+    setFile(null);
+    setError("");
+    setStatus("");
+    setProgress(0);
+    setUploading(false); // Force stop uploading state
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   async function handleSubmit(e) {
@@ -55,13 +76,7 @@ export default function UploadNotes() {
     setError("");
     setStatus("");
 
-    // simple auth check
-    // const user = auth.currentUser;
-    // if (!user) {
-    //   setError("You must be logged in to upload notes.");
-    //   return;
-    // }
-    const user = { uid: "guest_user" }; // Bypass auth for now
+    console.log("Starting upload process...");
 
     if (!title.trim() || !subject || !semester || !file) {
       setError("Please complete all required fields and select a file.");
@@ -72,7 +87,25 @@ export default function UploadNotes() {
       setUploading(true);
       setProgress(0);
 
-      const storageRef = ref(storage, `notes/${user.uid}/${Date.now()}_${file.name}`);
+      // Try to sign in anonymously if not already signed in
+      let user = auth.currentUser;
+      if (!user) {
+        try {
+          console.log("Attempting anonymous sign-in...");
+          const userCredential = await signInAnonymously(auth);
+          user = userCredential.user;
+          console.log("Signed in anonymously:", user.uid);
+        } catch (authErr) {
+          console.error("Anonymous sign-in failed:", authErr);
+          // Fallback to guest ID if auth fails (might still fail storage rules)
+          user = { uid: "guest_user" };
+        }
+      }
+
+      const storagePath = `notes/${user.uid}/${Date.now()}_${file.name}`;
+      console.log("Uploading to:", storagePath);
+
+      const storageRef = ref(storage, storagePath);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on(
@@ -80,46 +113,56 @@ export default function UploadNotes() {
         (snapshot) => {
           const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
           setProgress(pct);
+          console.log(`Upload progress: ${pct}%`);
         },
         (err) => {
+          console.error("Upload error:", err);
           setUploading(false);
-          setError("Upload failed: " + err.message);
+          if (err.code === 'storage/unauthorized') {
+            setError("Permission denied. Please check your Firebase Storage Rules in the console. Ensure they allow writes.");
+          } else {
+            setError("Upload failed: " + err.message);
+          }
         },
         async () => {
-          const fileUrl = await getDownloadURL(uploadTask.snapshot.ref);
+          try {
+            console.log("File uploaded, getting download URL...");
+            const fileUrl = await getDownloadURL(uploadTask.snapshot.ref);
+            console.log("Download URL:", fileUrl);
 
-          // store metadata in Firestore
-          await addDoc(collection(db, "notes"), {
-            title: title.trim(),
-            subject,
-            semester,
-            type,
-            tags: tags.split(",").map(t => t.trim()).filter(Boolean),
-            description: description.trim(),
-            fileUrl,
-            fileName: file.name,
-            uploaderId: user.uid,
-            verified: false, // teacher will verify later
-            downloads: 0,
-            uploadedAt: serverTimestamp(),
-          });
+            // store metadata in Firestore
+            await addDoc(collection(db, "notes"), {
+              title: title.trim(),
+              subject,
+              semester,
+              type,
+              tags: tags.split(",").map(t => t.trim()).filter(Boolean),
+              description: description.trim(),
+              fileUrl,
+              fileName: file.name,
+              uploaderId: user.uid,
+              verified: false, // teacher will verify later
+              downloads: 0,
+              uploadedAt: serverTimestamp(),
+            });
 
-          setUploading(false);
-          setStatus("Uploaded successfully — pending verification by teachers.");
-          setTitle("");
-          setSubject("");
-          setSemester("");
-          setType("Notes");
-          setTags("");
-          setDescription("");
-          setFile(null);
-          setProgress(0);
+            console.log("Metadata saved to Firestore");
 
-          // optional: navigate to notes or show toast
-          navigate("/notes");
+            setUploading(false);
+            setStatus("Uploaded successfully — pending verification by teachers.");
+            handleReset(); // Clear form
+
+            // optional: navigate to notes or show toast
+            navigate("/notes");
+          } catch (firestoreErr) {
+            console.error("Firestore error:", firestoreErr);
+            setUploading(false);
+            setError("File uploaded but failed to save metadata: " + firestoreErr.message);
+          }
         }
       );
     } catch (err) {
+      console.error("Unexpected error:", err);
       setUploading(false);
       setError("Something went wrong: " + err.message);
     }
@@ -180,7 +223,13 @@ export default function UploadNotes() {
             <label className="text-sm font-medium">File (PDF / DOC / DOCX) *</label>
 
             <label className="mt-2 flex items-center gap-3 cursor-pointer">
-              <input type="file" accept=".pdf,.doc,.docx" onChange={handleFile} className="hidden" />
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={handleFile}
+                className="hidden"
+                ref={fileInputRef}
+              />
               <div className="px-4 py-2 bg-blue-600 text-white rounded-lg">Choose file</div>
 
               <div className="text-sm text-gray-600">
@@ -212,7 +261,7 @@ export default function UploadNotes() {
               {uploading ? "Uploading..." : "Upload"}
             </button>
 
-            <button type="button" onClick={() => { setTitle(""); setSubject(""); setSemester(""); setType("Notes"); setTags(""); setFile(null); setDescription(""); setError(""); setStatus(""); }} className="text-sm text-gray-600 hover:underline">
+            <button type="button" onClick={handleReset} className="text-sm text-gray-600 hover:underline">
               Reset
             </button>
           </div>

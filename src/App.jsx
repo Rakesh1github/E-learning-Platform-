@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import HomePage from "./HomePage.jsx";
 import Navs from "./Nav.jsx";
 import Nav2 from "./Nav2.jsx";
-import Hero from "./card/heroSec.jsx";
+ import Hero from "./card/heroSec.jsx";
 import Basic from "./card/Browse.jsx";
 import Card2 from "./card/Card2.jsx";
 import Footer from "./HeaderFooter/footer.jsx";
@@ -25,7 +26,9 @@ function App() {
         <Route path="/landing" element={<LandingPage />} />
 
         {/* Home Page */}
-        <Route
+        
+         <Route path="/" element={<HomePage />} />
+        {/* <Route
           path="/"
           element={
             <>
@@ -34,7 +37,7 @@ function App() {
               <Card2 />
             </>
           }
-        />
+        /> */}
 
         {/* Link Page */}
         <Route path="/link" element={<Nav2 />} />

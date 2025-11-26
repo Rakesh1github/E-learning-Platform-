@@ -67,10 +67,9 @@ export default function Card2() {
                 <p className="card-sub">{c.subtitle}</p>
                 <p className="card-desc">{c.description}</p>
                 <div className="card-footer">
-                  <Link to={c.path}>
-                    <button className="btn">View</button>
+                  <Link to={c.path} className="w-full">
+                    <button className="btn-primary">Start Learning</button>
                   </Link>
-                  <div className="card-id">#{c.id}</div>
                 </div>
               </div>
             </div>
