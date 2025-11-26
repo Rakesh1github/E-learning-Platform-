@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaSearch, FaBars, FaTimes } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import "./Nav.css";
 
 export default function Navs() {
@@ -10,12 +11,13 @@ export default function Navs() {
       <div className="nav-inner">
         {/* Logo + Brand */}
         <div className="logo" aria-label="Site logo">
-          <img id="logo"
-            src="/src/assets/logo.jpg"
+          <img
+            id="logo"
+            src="/src/assets/websitelogo.png"
             alt="EduNexa Logo"
             className="logo-img"
           />
-          <span className="brand">EduNexa</span>
+          <span className="brand">SkillsAura</span>
         </div>
 
         {/* Desktop Navigation */}
@@ -24,10 +26,10 @@ export default function Navs() {
           aria-label="Main navigation"
         >
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/link">Link</a></li>
-            <li><a href="/important">Important Questions</a></li>
-            <li><a href="/about">About</a></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/link">Link</Link></li>
+            <li><Link to="/important">Important Questions</Link></li>
+            <li><Link to="/about">About</Link></li>
           </ul>
         </nav>
 
@@ -61,13 +63,13 @@ export default function Navs() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* ✅ Mobile menu with <Link> instead of <a> */}
       <div className={`mobile-menu ${open ? "show" : ""}`} aria-hidden={!open}>
         <ul>
-          <li><a href="/" onClick={() => setOpen(false)}>Home</a></li>
-          <li><a href="/link" onClick={() => setOpen(false)}>Link</a></li>
-          <li><a href="/important" onClick={() => setOpen(false)}>Important Questions</a></li>
-          <li><a href="/about" onClick={() => setOpen(false)}>About</a></li>
+          <li><Link to="/" onClick={() => setOpen(false)}>Home</Link></li>
+          <li><Link to="/link" onClick={() => setOpen(false)}>Link</Link></li>
+          <li><Link to="/important" onClick={() => setOpen(false)}>Important Questions</Link></li>
+          <li><Link to="/about" onClick={() => setOpen(false)}>About</Link></li>
         </ul>
       </div>
     </header>

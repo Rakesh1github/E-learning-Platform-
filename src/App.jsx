@@ -1,52 +1,58 @@
-
-
-import Navs from './Nav.jsx'
-import Nav2 from './Nav2.jsx'
-import {BrowserRouter as Router,Routes,Route } from 'react-router-dom'
-import Hero from './card/heroSec.jsx'
-import Basic from './card/Browse.jsx'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navs from "./Nav.jsx";
+import Nav2 from "./Nav2.jsx";
+import Hero from "./card/heroSec.jsx";
+import Basic from "./card/Browse.jsx";
+import Card2 from "./card/Card2.jsx";
+import Footer from "./HeaderFooter/footer.jsx";
+import AboutPage from "./About.jsx";
+import HeroSection from "./newHero.jsx";
 import "./index.css";
-import Footer from './HeaderFooter/footer.jsx'
-import Card2 from './card/Card2.jsx'
-
-
-
-
-
-
 
 function App() {
-
-
   return (
-    <>
-    
-      <Navs/>
-      
-
-     
-      
-      <Hero/>
-      <Basic/>
-      <Card2/>
-      
-      
-      <Router>
-      
-      
-      <Footer/>
-    
+    <Router>
+      <Navs />
 
       <Routes>
-        
-        <Route path='/css' element={<Nav2/>}/>
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <Basic />
+              <Card2 />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route path="/link" element={<Nav2 />} />
+
+        <Route
+          path="/about"
+          element={
+            <>
+              <AboutPage />
+              <HeroSection />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/important"
+          element={
+            <>
+              <AboutPage />
+              <HeroSection />
+              <Footer />
+            </>
+          }
+        />
       </Routes>
-      </Router>
-      
-    
-      </>
-   
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;

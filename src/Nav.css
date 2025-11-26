@@ -9,12 +9,13 @@
 /* Header */
 .site-header {
   width: 100%;
-  background: linear-gradient(90deg, #540b0e, #6a0f12);
+   background: linear-gradient(to right, #00093c,#2d0b00);
   color: #fff;
   position: sticky;
   top: 0;
   z-index: 99;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+   font-family: monospace;
 }
 
 /* Container */
@@ -41,18 +42,18 @@
   height: 60px;
   border-radius: 50%;
   background-color: #731212;
-<<<<<<< HEAD
+
   box-shadow: 0 0 12px rgba(255, 200, 0, 0.45);
   transition: transform 0.3s ease;
 }
 
 .logo-img:hover {
   transform: rotate(10deg) scale(1.1);
-=======
+
   box-shadow: 0 0 12px rgba(255,200,0,0.45);
   transition: transform .3s ease;
   flex-shrink: 0;
->>>>>>> 8e255344a417de79c2b88fe79e0d6f737418fc78
+
 }
 .logo-img:hover { transform: rotate(10deg) scale(1.06); }
 .brand {

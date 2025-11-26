@@ -8,23 +8,23 @@ const slides = [
   {
     id: 1,
     image: heroImg1,
-    author: "Nature",
-    title: "Beautiful Landscape",
-    topic: "Mountains",
+    author: "",
+    title: "Skills Aura",
+    topic: "Learn. Grow. Succeed — with Skills Aura.",
   },
   {
     id: 2,
     image: heroImg2,
-    author: "Ocean",
-    title: "Peaceful Waves",
-    topic: "Beach",
+    author: "",
+    title: "Skills Aura ",
+    topic: "Providing Accurate Knowledge for placement ",
   },
   {
     id: 3,
     image: heroImg3,
-    author: "City",
-    title: "Modern Architecture",
-    topic: "Urban",
+    author: "",
+    title: "Skills Aura",
+    topic: "Learn smarter, grow faster",
   },
 ];
 
