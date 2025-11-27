@@ -1,10 +1,19 @@
-import React, { useState } from "react";
-import { FaSearch, FaBars, FaTimes } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaBars, FaTimes, FaSun, FaMoon } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./Nav.css";
 
 export default function Navs() {
   const [open, setOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [darkMode]);
 
   return (
     <header className="site-header">
@@ -27,30 +36,29 @@ export default function Navs() {
         >
           <ul>
             <li><Link to="/">Home</Link></li>
-            {/* <li><Link to="/link">Link</Link></li> */}
             <li><Link to="/landing">Link</Link></li>
             <li><Link to="/important">About</Link></li>
-            {/* <li><Link to="/about">About</Link></li> */}
           </ul>
 
         </nav>
 
         {/* Right side actions */}
         <div className="nav-actions">
-          <div className="search">
-            <input
-              type="search"
-              placeholder="Search here..."
-              aria-label="Search"
-              className="search-input"
-            />
-            <button className="search-btn" aria-label="Search button">
-              <FaSearch />
-            </button>
-          </div>
+          {/* Theme Toggle */}
+          <button
+            className="theme-toggle"
+            onClick={() => setDarkMode(!darkMode)}
+            aria-label="Toggle Dark Mode"
+          >
+            {darkMode ? <FaSun className="sun-icon" /> : <FaMoon className="moon-icon" />}
+          </button>
 
           <button className="login-btn" aria-label="Login">
             Login
+          </button>
+
+          <button className="register-btn" aria-label="Register">
+            Register
           </button>
 
           {/* Mobile toggle */}

@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import H1 from "./assets/H1.png";
+import H2 from "./assets/H2.jpg";
 
 const slides = [
   {
-    title: "Stress at Work?",
-    text: "Find verified notes & study materials to reduce study stress.",
-    btn: "Explore Notes",
-    image: "/assets/hero1.png",
-    link: "/notes",
+    title: "Overwhelmed by deadlines?",
+    text: "Discover a curated collection of verified notes designed to simplify your learning journey and reduce study stress.",
+    image: H1,
   },
   {
-    title: "Prepare Smarter",
-    text: "Get PYQs, DSA materials, handwritten notes & more.",
-    btn: "Start Learning",
-    image: "/assets/hero2.png",
-    link: "/landing",
+    title: "Prepare Smarter, Not Harder",
+    text: "Access Previous Year Questions (PYQs), DSA materials, and handwritten notes to ace your exams with confidence.",
+    image: H2,
   },
   {
-    title: "Upload & Share",
-    text: "Help students by sharing your notes. Quick verification.",
-    btn: "Upload Notes",
-    image: "/assets/hero3.png",
-    link: "/upload",
+    title: "Share Knowledge, Help Others",
+    text: "Join our community by uploading your notes. Quick verification ensures quality for everyone.",
+    image: H1,
   },
 ];
 
@@ -39,40 +34,35 @@ export default function HeroSlider() {
   const slide = slides[i];
 
   return (
-    <div className="relative w-full h-[80vh] overflow-hidden bg-gradient-to-r from-purple-700 to-purple-900 text-white flex items-center">
-      
-      {/* LEFT TEXT */}
-      <div className="w-1/2 pl-16 space-y-6">
-        <h1 className="text-4xl font-bold">{slide.title}</h1>
-        <p className="text-lg w-[80%]">{slide.text}</p>
-        <Link
-          to={slide.link}
-          className="px-6 py-3 bg-yellow-400 text-purple-900 font-semibold rounded-lg shadow-md hover:bg-yellow-300"
-        >
-          {slide.btn}
-        </Link>
+    <div className="relative w-full h-[85vh] overflow-hidden text-white">
+      {/* Background Image with Overlay */}
+      <div
+        className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out transform"
+        style={{ backgroundImage: `url(${slide.image})` }}
+      >
+        <div className="absolute inset-0 bg-black/60" /> {/* Dark Overlay for readability */}
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+        <h1 className="text-5xl md:text-7xl font-extrabold mb-6 drop-shadow-2xl tracking-tight animate-fade-in-up">
+          {slide.title}
+        </h1>
+        <p className="text-xl md:text-2xl max-w-4xl drop-shadow-lg font-light leading-relaxed text-gray-100 animate-fade-in-up delay-100">
+          {slide.text}
+        </p>
 
         {/* Dots */}
-        <div className="flex gap-3 mt-6">
+        <div className="flex gap-4 mt-12">
           {slides.map((_, idx) => (
             <div
               key={idx}
               onClick={() => setI(idx)}
-              className={`h-3 w-3 rounded-full transition-all cursor-pointer ${
-                idx === i ? "bg-yellow-300 scale-125" : "bg-white/50"
-              }`}
+              className={`h-3 w-3 rounded-full transition-all duration-300 cursor-pointer ${idx === i ? "bg-yellow-400 scale-150 w-8" : "bg-white/40 hover:bg-white/80"
+                }`}
             />
           ))}
         </div>
-      </div>
-
-      {/* RIGHT IMAGE */}
-      <div className="w-1/2 flex justify-center">
-        <img
-          src={slide.image}
-          alt="hero"
-          className="max-h-[420px] object-contain drop-shadow-lg"
-        />
       </div>
     </div>
   );
