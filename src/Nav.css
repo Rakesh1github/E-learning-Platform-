@@ -19,13 +19,10 @@
 }
 
 /* Dark Mode Styles */
-body.dark-mode {
-  background-color: #121212;
-  color: #e0e0e0;
-}
+/* body.dark-mode moved to index.css for global scope */
 
-body.dark-mode .site-header {
-  background: linear-gradient(to right, #000000, #1a0500);
+body.dark .site-header {
+  background: linear-gradient(to right, #000a2e, #001233);
 }
 
 /* Container */

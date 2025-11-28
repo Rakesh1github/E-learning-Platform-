@@ -54,13 +54,13 @@ export default function NotesLibrary() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-10">
-      <h1 className="text-4xl font-bold text-center mb-10">
+    <div className="min-h-screen bg-gray-50 dark:bg-transparent px-6 py-10 transition-colors duration-300">
+      <h1 className="text-4xl font-bold text-center mb-10 dark:text-white">
         📚 Notes Library
       </h1>
 
       {/* Search + Filters */}
-      <div className="max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow-md mb-10">
+      <div className="max-w-5xl mx-auto bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-md mb-10 transition-colors duration-300">
         <div className="grid md:grid-cols-3 gap-4">
 
           {/* Search */}
@@ -69,14 +69,14 @@ export default function NotesLibrary() {
             placeholder="Search notes..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border border-gray-300 p-3 rounded-lg w-full focus:ring focus:ring-blue-300"
+            className="border border-gray-300 dark:border-gray-600 p-3 rounded-lg w-full focus:ring focus:ring-blue-300 dark:bg-slate-700 dark:text-white dark:placeholder-gray-400"
           />
 
           {/* Subject Filter */}
           <select
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
-            className="border border-gray-300 p-3 rounded-lg w-full"
+            className="border border-gray-300 dark:border-gray-600 p-3 rounded-lg w-full dark:bg-slate-700 dark:text-white"
           >
             <option value="">Filter by Subject</option>
             {subjects.map((sub, i) => (
@@ -90,7 +90,7 @@ export default function NotesLibrary() {
           <select
             value={selectedSemester}
             onChange={(e) => setSelectedSemester(Number(e.target.value))}
-            className="border border-gray-300 p-3 rounded-lg w-full"
+            className="border border-gray-300 dark:border-gray-600 p-3 rounded-lg w-full dark:bg-slate-700 dark:text-white"
           >
             <option value="">Filter by Semester</option>
             {semesters.map((sem) => (

@@ -19,7 +19,7 @@
 // export const auth = getAuth(app);
 // export const storage = getStorage(app);
 // export const db = getFirestore(app);
-  
+
 
 
 //---after updating 
@@ -27,7 +27,7 @@
 // src/firebase.js
 
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 
@@ -35,10 +35,10 @@ const firebaseConfig = {
   apiKey: "AIzaSyCWiWng0HPAABIXBBl4zwutqZTXNz_ntrw",
   authDomain: "college-project-d5f0f.firebaseapp.com",
   projectId: "college-project-d5f0f",
-  
+
   // FIXED LINE 
   storageBucket: "college-project-d5f0f.appspot.com",
-  
+
   messagingSenderId: "667757714614",
   appId: "1:667757714614:web:a98159690a885be73b1a17",
 };
@@ -46,5 +46,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
 export const storage = getStorage(app);
 export const db = getFirestore(app);

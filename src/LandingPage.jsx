@@ -17,7 +17,7 @@ export default function LandingPage() {
             {/* Left */}
             <div className="space-y-6">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-                Learn Smarter, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600">Grow Faster</span> — 
+                Learn Smarter, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600">Grow Faster</span> —
                 <div className="text-2xl md:text-3xl font-semibold mt-2">MCA & BCA Students Platform</div>
               </h1>
 
@@ -66,44 +66,12 @@ export default function LandingPage() {
       </section>
 
       {/* ---------- WHY CHOOSE US (FEATURES) ---------- */}
-    <section className="px-6 py-16 bg-white">
-  <h2 className="text-3xl font-bold text-center mb-10">
-    Browse by Subjects
-  </h2>
-
-  <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-    {[
-      { name: "DBMS", color: "from-teal-400 to-teal-600", icon: "📦" },
-      { name: "OOPS", color: "from-purple-400 to-purple-600", icon: "🐟" },
-      { name: "DSA", color: "from-yellow-400 to-orange-500", icon: "🤖" },
-      { name: "Computer Networks", color: "from-blue-400 to-blue-600", icon: "🌐" },
-
-      { name: "Operating System", color: "from-orange-400 to-orange-600", icon: "💻" },
-      { name: "Software Engineering", color: "from-pink-400 to-pink-600", icon: "📘" },
-      { name: "Web Technology", color: "from-indigo-400 to-indigo-600", icon: "🌐" },
-      { name: "Aptitude & Reasoning", color: "from-green-400 to-green-600", icon: "🔢" },
-    ].map((card, i) => (
-      <div
-        key={i}
-        className={`
-          bg-gradient-to-b ${card.color}
-          text-white rounded-3xl shadow-xl p-6 flex flex-col items-center
-          transition transform hover:-translate-y-2 hover:shadow-2xl cursor-pointer
-        `}
-      >
-        <div className="text-5xl mb-4">{card.icon}</div>
-        <h3 className="text-xl font-semibold text-center">{card.name}</h3>
-      </div>
-    ))}
-  </div>
-</section>
-
-
-      {/* ---------- SUBJECTS (COLORFUL CARDS) ---------- */}
       <section className="px-6 py-16 bg-white">
-        <h2 className="text-3xl font-bold text-center mb-8">Browse by Subjects</h2>
+        <h2 className="text-3xl font-bold text-center mb-10">
+          Browse by Subjects
+        </h2>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
             { name: "DBMS", color: "from-teal-400 to-teal-600", icon: "📦" },
             { name: "OOPS", color: "from-purple-400 to-purple-600", icon: "🐟" },
@@ -112,10 +80,43 @@ export default function LandingPage() {
 
             { name: "Operating System", color: "from-orange-400 to-orange-600", icon: "💻" },
             { name: "Software Engineering", color: "from-pink-400 to-pink-600", icon: "📘" },
-            { name: "Web Technology", color: "from-indigo-400 to-indigo-600", icon: "🕸️" },
+            { name: "Web Technology", color: "from-indigo-400 to-indigo-600", icon: "🌐" },
             { name: "Aptitude & Reasoning", color: "from-green-400 to-green-600", icon: "🔢" },
+          ].map((card, i) => (
+            <div
+              key={i}
+              className={`
+          bg-gradient-to-b ${card.color}
+          text-white rounded-3xl shadow-xl p-6 flex flex-col items-center
+          transition transform hover:-translate-y-2 hover:shadow-2xl cursor-pointer
+        `}
+            >
+              <div className="text-5xl mb-4">{card.icon}</div>
+              <h3 className="text-xl font-semibold text-center">{card.name}</h3>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
+      {/* ---------- SUBJECTS (COLORFUL CARDS) ---------- */}
+      <section className="px-6 py-16 bg-white">
+        <h2 className="text-3xl font-bold text-center mb-8">Browse by Subjects</h2>
+
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[
+            { name: "DBMS", color: "from-teal-400 to-teal-600", icon: "📦", link: "/notes" },
+            { name: "OOPS", color: "from-purple-400 to-purple-600", icon: "🐟", link: "/notes" },
+            { name: "DSA", color: "from-yellow-400 to-orange-500", icon: "🤖", link: "/dsa" },
+            { name: "Computer Networks", color: "from-blue-400 to-blue-600", icon: "🌐", link: "/notes" },
+
+            { name: "Operating System", color: "from-orange-400 to-orange-600", icon: "💻", link: "/notes" },
+            { name: "Software Engineering", color: "from-pink-400 to-pink-600", icon: "📘", link: "/notes" },
+            { name: "Web Technology", color: "from-indigo-400 to-indigo-600", icon: "🕸️", link: "/notes" },
+            { name: "Aptitude & Reasoning", color: "from-green-400 to-green-600", icon: "🔢", link: "/notes" },
           ].map((s, idx) => (
-            <button
+            <Link
+              to={s.link}
               key={idx}
               className={`group rounded-2xl p-6 flex flex-col items-center justify-center text-white shadow-xl transform transition-all hover:-translate-y-3`}
               aria-label={`Open ${s.name}`}
@@ -125,7 +126,7 @@ export default function LandingPage() {
                 <span className="drop-shadow-sm">{s.icon}</span>
               </div>
               <div className="text-lg font-semibold">{s.name}</div>
-            </button>
+            </Link>
           ))}
         </div>
       </section>

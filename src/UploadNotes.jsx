@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { signInAnonymously } from "firebase/auth";
-import { auth, storage, db } from "./firebase"; // adjust path if needed
+import { auth, storage, db } from "./firebase";
 import { useNavigate } from "react-router-dom";
+import { FaCloudUploadAlt, FaFileAlt, FaCheckCircle, FaExclamationCircle, FaInfoCircle } from "react-icons/fa";
 
 export default function UploadNotes() {
   const navigate = useNavigate();
@@ -18,38 +18,54 @@ export default function UploadNotes() {
   const [file, setFile] = useState(null);
 
   const [error, setError] = useState("");
-  const [status, setStatus] = useState(""); // success / error messages
+  const [status, setStatus] = useState("");
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [dragActive, setDragActive] = useState(false);
 
   const subjects = [
-    "DBMS",
-    "OOPS",
-    "DSA",
-    "Computer Networks",
-    "Operating System",
-    "Software Engineering",
-    "Web Technology",
-    "Aptitude & Reasoning",
+    "DBMS", "OOPS", "DSA", "Computer Networks",
+    "Operating System", "Software Engineering",
+    "Web Technology", "Aptitude & Reasoning",
   ];
 
-  const handleFile = (e) => {
-    setError("");
-    const f = e.target.files?.[0];
-    if (!f) return setFile(null);
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
 
-    // validation
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      validateAndSetFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      validateAndSetFile(e.target.files[0]);
+    }
+  };
+
+  const validateAndSetFile = (f) => {
+    setError("");
     const allowed = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
     const maxBytes = 20 * 1024 * 1024; // 20MB
+
     if (!allowed.includes(f.type)) {
       setError("Only PDF/DOC/DOCX files are allowed.");
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      return setFile(null);
+      return;
     }
     if (f.size > maxBytes) {
       setError("File size must be less than 20 MB.");
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      return setFile(null);
+      return;
     }
     setFile(f);
   };
@@ -65,10 +81,8 @@ export default function UploadNotes() {
     setError("");
     setStatus("");
     setProgress(0);
-    setUploading(false); // Force stop uploading state
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    setUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   async function handleSubmit(e) {
@@ -76,7 +90,12 @@ export default function UploadNotes() {
     setError("");
     setStatus("");
 
-    console.log("Starting upload process...");
+    const user = auth.currentUser;
+    if (!user) {
+      setError("You must be logged in to upload notes.");
+      setTimeout(() => navigate("/login"), 2000);
+      return;
+    }
 
     if (!title.trim() || !subject || !semester || !file) {
       setError("Please complete all required fields and select a file.");
@@ -87,24 +106,7 @@ export default function UploadNotes() {
       setUploading(true);
       setProgress(0);
 
-      // Try to sign in anonymously if not already signed in
-      let user = auth.currentUser;
-      if (!user) {
-        try {
-          console.log("Attempting anonymous sign-in...");
-          const userCredential = await signInAnonymously(auth);
-          user = userCredential.user;
-          console.log("Signed in anonymously:", user.uid);
-        } catch (authErr) {
-          console.error("Anonymous sign-in failed:", authErr);
-          // Fallback to guest ID if auth fails (might still fail storage rules)
-          user = { uid: "guest_user" };
-        }
-      }
-
       const storagePath = `notes/${user.uid}/${Date.now()}_${file.name}`;
-      console.log("Uploading to:", storagePath);
-
       const storageRef = ref(storage, storagePath);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -113,24 +115,15 @@ export default function UploadNotes() {
         (snapshot) => {
           const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
           setProgress(pct);
-          console.log(`Upload progress: ${pct}%`);
         },
         (err) => {
           console.error("Upload error:", err);
           setUploading(false);
-          if (err.code === 'storage/unauthorized') {
-            setError("Permission denied. Please check your Firebase Storage Rules in the console. Ensure they allow writes.");
-          } else {
-            setError("Upload failed: " + err.message);
-          }
+          setError("Upload failed: " + err.message);
         },
         async () => {
           try {
-            console.log("File uploaded, getting download URL...");
             const fileUrl = await getDownloadURL(uploadTask.snapshot.ref);
-            console.log("Download URL:", fileUrl);
-
-            // store metadata in Firestore
             await addDoc(collection(db, "notes"), {
               title: title.trim(),
               subject,
@@ -141,131 +134,239 @@ export default function UploadNotes() {
               fileUrl,
               fileName: file.name,
               uploaderId: user.uid,
-              verified: false, // teacher will verify later
+              verified: false,
               downloads: 0,
               uploadedAt: serverTimestamp(),
             });
 
-            console.log("Metadata saved to Firestore");
-
             setUploading(false);
-            setStatus("Uploaded successfully — pending verification by teachers.");
-            handleReset(); // Clear form
-
-            // optional: navigate to notes or show toast
-            navigate("/notes");
+            setStatus("Uploaded successfully! Pending verification.");
+            handleReset();
+            setTimeout(() => navigate("/notes"), 2000);
           } catch (firestoreErr) {
-            console.error("Firestore error:", firestoreErr);
             setUploading(false);
-            setError("File uploaded but failed to save metadata: " + firestoreErr.message);
+            setError("Failed to save metadata: " + firestoreErr.message);
           }
         }
       );
     } catch (err) {
-      console.error("Unexpected error:", err);
       setUploading(false);
       setError("Something went wrong: " + err.message);
     }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-12">
-      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow p-6">
-        <h2 className="text-2xl font-semibold mb-4">Upload Notes</h2>
-        <p className="text-sm text-gray-500 mb-4">
-          Upload PDFs or Word docs. All uploads are checked by our teachers before publishing.
-        </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-gray-100 transition-colors duration-300 py-12 px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-5 gap-8">
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="text-sm font-medium">Title *</label>
-            <input value={title} onChange={e => setTitle(e.target.value)} className="w-full mt-2 p-3 border rounded-lg" placeholder="E.g. DBMS Unit 1 Notes" />
+        {/* Left Side: Guidelines */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-8 rounded-3xl shadow-xl">
+            <h2 className="text-3xl font-bold mb-4">Share Knowledge 🚀</h2>
+            <p className="opacity-90 mb-6">
+              Your notes can help thousands of students ace their exams. Upload clear, high-quality materials to build your reputation.
+            </p>
+
+            <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
+              <FaInfoCircle /> Guidelines
+            </h3>
+            <ul className="space-y-3 text-sm opacity-90">
+              <li className="flex items-start gap-2">
+                <span className="mt-1">•</span> Ensure handwriting is legible and scans are clear.
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1">•</span> Use descriptive titles (e.g., "DBMS Unit 1 - Normalization").
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1">•</span> Only upload PDF, DOC, or DOCX files under 20MB.
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1">•</span> Do not upload copyrighted material without permission.
+              </li>
+            </ul>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div>
-              <label className="text-sm font-medium">Subject *</label>
-              <select value={subject} onChange={e => setSubject(e.target.value)} className="w-full mt-2 p-3 border rounded-lg">
-                <option value="">Select subject</option>
-                {subjects.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium">Semester *</label>
-              <select value={semester} onChange={e => setSemester(e.target.value)} className="w-full mt-2 p-3 border rounded-lg">
-                <option value="">Select semester</option>
-                {[1, 2, 3, 4, 5, 6].map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium">Type</label>
-              <select value={type} onChange={e => setType(e.target.value)} className="w-full mt-2 p-3 border rounded-lg">
-                <option value="Notes">Notes</option>
-                <option value="PYQ">Previous Year Questions</option>
-                <option value="Important">Important Questions</option>
-              </select>
-            </div>
+          <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-md border border-gray-100 dark:border-slate-700">
+            <h3 className="font-bold text-lg mb-2 text-gray-800 dark:text-white">Why Upload?</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Earn badges, get recognized by the community, and help build the largest free library for MCA & BCA students.
+            </p>
           </div>
+        </div>
 
-          <div>
-            <label className="text-sm font-medium">Tags (comma separated)</label>
-            <input value={tags} onChange={e => setTags(e.target.value)} placeholder="ER Model, Normalization" className="w-full mt-2 p-3 border rounded-lg" />
-          </div>
+        {/* Right Side: Upload Form */}
+        <div className="lg:col-span-3">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-slate-700">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Upload Details</h2>
 
-          <div>
-            <label className="text-sm font-medium">Description (optional)</label>
-            <textarea value={description} onChange={e => setDescription(e.target.value)} rows={3} className="w-full mt-2 p-3 border rounded-lg" />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">File (PDF / DOC / DOCX) *</label>
-
-            <label className="mt-2 flex items-center gap-3 cursor-pointer">
-              <input
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={handleFile}
-                className="hidden"
-                ref={fileInputRef}
-              />
-              <div className="px-4 py-2 bg-blue-600 text-white rounded-lg">Choose file</div>
-
-              <div className="text-sm text-gray-600">
-                {file ? `${file.name} • ${(file.size / 1024 / 1024).toFixed(2)} MB` : "No file chosen"}
+            {status && (
+              <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 rounded-xl flex items-center gap-3 animate-fade-in-up">
+                <FaCheckCircle className="text-xl" /> {status}
               </div>
-            </label>
-            <p className="text-xs text-gray-400 mt-1">Max 20 MB. Only PDF, DOC, DOCX allowed.</p>
-          </div>
+            )}
 
-          {/* progress */}
-          {uploading && (
-            <div>
-              <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
-                <div className="h-3 bg-blue-600" style={{ width: `${progress}%` }} />
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 rounded-xl flex items-center gap-3 animate-fade-in-up">
+                <FaExclamationCircle className="text-xl" /> {error}
               </div>
-              <div className="text-sm text-gray-600 mt-1">{progress}%</div>
-            </div>
-          )}
+            )}
 
-          {error && <div className="text-red-600 text-sm">{error}</div>}
-          {status && <div className="text-green-600 text-sm">{status}</div>}
+            <form onSubmit={handleSubmit} className="space-y-6">
 
-          <div className="flex items-center justify-between">
-            <button
-              type="submit"
-              disabled={uploading}
-              className={`inline-flex items-center px-6 py-3 rounded-lg text-white ${uploading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"}`}
-            >
-              {uploading ? "Uploading..." : "Upload"}
-            </button>
+              {/* Drag & Drop Zone */}
+              <div
+                className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 cursor-pointer group
+                  ${dragActive
+                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                    : "border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-gray-50 dark:hover:bg-slate-700/50"
+                  }
+                  ${file ? "bg-green-50 dark:bg-green-900/10 border-green-400" : ""}
+                `}
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDragOver={handleDrag}
+                onDrop={handleDrop}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleFileChange}
+                  className="hidden"
+                  ref={fileInputRef}
+                />
 
-            <button type="button" onClick={handleReset} className="text-sm text-gray-600 hover:underline">
-              Reset
-            </button>
+                <div className="flex flex-col items-center gap-3">
+                  {file ? (
+                    <>
+                      <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-3xl">
+                        <FaFileAlt />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-800 dark:text-white">{file.name}</p>
+                        <p className="text-sm text-gray-500">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); setFile(null); }}
+                        className="text-red-500 hover:underline text-sm mt-2"
+                      >
+                        Remove File
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-16 h-16 bg-blue-100 dark:bg-slate-700 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                        <FaCloudUploadAlt />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-lg text-gray-700 dark:text-gray-200">
+                          Drag & Drop your file here
+                        </p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                          or click to browse (PDF, DOC, DOCX)
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Form Fields Grid */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Title <span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    className="w-full p-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition dark:text-white"
+                    placeholder="e.g. DBMS Unit 1"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Subject <span className="text-red-500">*</span></label>
+                  <select
+                    className="w-full p-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition dark:text-white"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    required
+                  >
+                    <option value="">Select Subject</option>
+                    {subjects.map((sub, i) => <option key={i} value={sub}>{sub}</option>)}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Semester <span className="text-red-500">*</span></label>
+                  <select
+                    className="w-full p-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition dark:text-white"
+                    value={semester}
+                    onChange={(e) => setSemester(e.target.value)}
+                    required
+                  >
+                    <option value="">Select Semester</option>
+                    {[1, 2, 3, 4, 5, 6].map((sem) => <option key={sem} value={sem}>Semester {sem}</option>)}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Type</label>
+                  <select
+                    className="w-full p-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition dark:text-white"
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                  >
+                    <option value="Notes">Notes</option>
+                    <option value="PYQ">PYQ</option>
+                    <option value="Assignment">Assignment</option>
+                    <option value="Lab Manual">Lab Manual</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Description</label>
+                <textarea
+                  rows="3"
+                  className="w-full p-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition dark:text-white"
+                  placeholder="Add a brief description..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                ></textarea>
+              </div>
+
+              {/* Progress Bar */}
+              {uploading && (
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                  <div className="bg-blue-600 h-full transition-all duration-300" style={{ width: `${progress}%` }}></div>
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="flex gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  disabled={uploading}
+                  className="px-6 py-3 rounded-xl font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition"
+                >
+                  Reset
+                </button>
+                <button
+                  type="submit"
+                  disabled={uploading}
+                  className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {uploading ? `Uploading... ${progress}%` : "Upload Notes"}
+                </button>
+              </div>
+
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
