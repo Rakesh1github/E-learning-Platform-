@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage.jsx";
 import Navs from "./Nav.jsx";
 import Footer from "./HeaderFooter/footer.jsx";
- import AboutPage from "./About.jsx";
+import AboutPage from "./About.jsx";
 import LandingPage from "./LandingPage.jsx";
 import NotesLibrary from "./NotesLibrary.jsx";
 import UploadNotes from "./UploadNotes.jsx";
@@ -16,6 +16,7 @@ import CodeCompiler from "./CodeCompiler.jsx";
 import ProgrammingHome from "./programming/ProgrammingHome.jsx";
 import ProgrammingLanguage from "./programming/ProgrammingLanguage.jsx";
 import ProgrammingDetail from "./programming/ProgrammingDetail.jsx";
+import ChatbotPage from "./ChatbotPage.jsx";
 
 function App() {
   return (
@@ -62,6 +63,9 @@ function App() {
         {/*  Notes Library Page */}
         <Route path="/notes" element={<NotesLibrary />} />
         <Route path="/upload" element={<UploadNotes />} />
+
+        {/* Chatbot Page */}
+        <Route path="/chatbot" element={<ChatbotPage />} />
 
       </Routes>
 
